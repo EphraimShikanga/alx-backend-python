@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+"""Safely retrieves a value from a dictionary,
+with an optional default value.
+"""
+from typing import Mapping, Any, TypeVar, Union
+
+
+T = TypeVar('T')
+
+
+def safely_get_value(dct: Mapping, key: Any,
+                     default: Union[T, None] = None) -> Union[Any, T]:
+    """ Args:
+        dct (Mapping): The dictionary-like object to retrieve the value from.
+        key (Any): The key used to access the value in the dictionary.
+        default (Union[T, None], optional): The default value to return if
+        the key is not found in the dictionary.
+            Defaults to None.
+
+    Returns:
+        Union[Any, T]: The retrieved value if the key is found
+        in the dictionary, or the default value if not.
+
+    """
+    if key in dct:
+        return dct[key]
+    else:
+        return default
