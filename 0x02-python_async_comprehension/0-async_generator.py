@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+"""An async generator that yields a random number between 0 and 10"""
 import random
 import asyncio
 from typing import Generator
