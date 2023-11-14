@@ -1,28 +1,20 @@
 #!/usr/bin/env python3
+"""Spawns wait_random n times with a
+specified delay between each call."""
 import asyncio
 from typing import List
-from functools import cmp_to_key
 
-wait_random = __import__('0-basic_async_syntax.py').wait_random
+wait_random = __import__('0-basic_async_syntax').wait_random
 
-async def wait_n(n, max_delay) -> List[float]:
-    """[summary]
 
+async def wait_n(n: int, max_delay: int) -> List[float]:
+    """Spawns wait_random n times with a specified delay
+    between each call.
     Args:
-        n (int): [description]
-        max_delay ([type]): [description]
-
+        n: number of times to spawn wait_random
+        max_delay: maximum delay between each call
     Returns:
-        List[float]: [description]
+        list of delays
     """
-    delays = []
-
-    async def collect_delay(index: int):
-        delay = await wait_random(max_delay)
-        delays.append((index, delay))
-
-    coroutines = [collect_delay(i) for i in range(n)]
-    await asyncio.gather(*coroutines)
-
-    delays.sort(key=cmp_to_key(lambda a, b: a[0] - b[0]))
-    return [delay for _, delay in delays]
+    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
+    return [await task for task in asyncio.as_completed(tasks)]
